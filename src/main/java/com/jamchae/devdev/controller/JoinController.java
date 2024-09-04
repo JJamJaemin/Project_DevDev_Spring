@@ -4,7 +4,6 @@ import com.jamchae.devdev.DTO.JoinDTO;
 import com.jamchae.devdev.service.JoinService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -19,11 +18,12 @@ public class JoinController {
     }
 
     @PostMapping("/join") //회원가입
-    public String joinProcess(@RequestBody JoinDTO joinDTO) { //RequestBody 파싱을 해야 들어감
+    public String joinProcess(JoinDTO joinDTO) { //RequestBody 파싱을 해야 들어감
 
         System.out.println(joinDTO.getUsername());
         joinService.joinProcess(joinDTO);
 
         return "ok";
     }
+
 }
