@@ -9,24 +9,26 @@ import jakarta.persistence.Id;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long user_id;
+    private int user_pid; //고유 아이디
 
-    private String username;
+    private String user_nickname; //사용자 이름
 
-    private Long password;
+    private String username; //사용자 id
+
+    private String password; //사용자 비밀번호
 
     private String user_image;
 
     private String skill;
 
-    private Boolean isAdmin;
+    private String role;
 
-    public Boolean getAdmin() {
-        return isAdmin;
+    public String getRole() {
+        return role;
     }
 
-    public void setAdmin(Boolean admin) {
-        isAdmin = admin;
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getSkill() {
@@ -45,21 +47,14 @@ public class User {
         this.user_image = user_image;
     }
 
-    public Long getPassword() {
+    public String getPassword() {
         return password;
     }
 
-    public void setPassword(Long password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 
-    public Long getId() {
-        return user_id;
-    }
-
-    public void setId(Long id) {
-        this.user_id = id;
-    }
 
     public String getUsername() {
         return username;
@@ -67,6 +62,20 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+    public String getUser_nickname() {
+        return user_nickname;
+    }
+
+    public void setUser_nickname(String user_nickname) {
+        this.user_nickname = user_nickname;
+    }
+    public int getUser_pid() {
+        return user_pid;
+    }
+
+    public void setUser_pid(int user_pid) {
+        this.user_pid = user_pid;
     }
 
 
