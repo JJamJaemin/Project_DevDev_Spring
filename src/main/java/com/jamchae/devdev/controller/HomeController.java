@@ -16,4 +16,9 @@ public class HomeController {
     public String loginPage() {
         return "login";
     }
+
+    @GetMapping("/joinpage")
+    public String joinPage() {
+        return "join";
+    }
 }
