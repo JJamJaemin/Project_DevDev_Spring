@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import com.jamchae.devdev.security.LoginFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -25,7 +26,7 @@ public class SecurityConfig {
     public SecurityConfig(AuthenticationConfiguration authenticationConfiguration, JWTUtil jwtUtil) {
 
         this.authenticationConfiguration = authenticationConfiguration;
-            this.jwtUtil = jwtUtil;
+        this.jwtUtil = jwtUtil;
     }
 
     //AuthenticationManager Bean 등록
@@ -35,6 +36,7 @@ public class SecurityConfig {
         return configuration.getAuthenticationManager();
     }
 
+    //비밀번호를 해싱
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
 
@@ -44,27 +46,41 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
+
+
+        //csrf disable
         http
                 .csrf((auth) -> auth.disable());
 
+
+        //Form 로그인 방식 disable
         http
                 .formLogin((auth) -> auth.disable());
 
+        //http basic 인증 방식 disable
         http
                 .httpBasic((auth) -> auth.disable());
 
+        //경로별 인가 작업
+        //로그인이나 회원가입은 인가 x
+        //admin은 ADMIN만 가능
+        //다른 요청에 대해서는 로그인이 되어야만 가능
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/login", "/", "/join").permitAll()
+                        .requestMatchers("/login", "/", "/join", "/loginpage", "joinpage").permitAll()
+                        .requestMatchers("/css/**", "/js/**", "/images/**","/").permitAll()
                         .anyRequest().authenticated());
 
+
+        //필터 추가 LoginFilter()는 인자를 받음 (AuthenticationManager() 메소드에 authenticationConfiguration 객체를 넣어야 함) 따라서 등록 필요
+        http
+                .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration),jwtUtil), UsernamePasswordAuthenticationFilter.class);
         //JWTFilter 등록
         http
                 .addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
-        //AuthenticationManager()와 JWTUtil 인수 전달
-        http
-                .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class);
 
+        //세션 설정
+        //JWT에서는 Session을 무상태성으로 관리
         http
                 .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));

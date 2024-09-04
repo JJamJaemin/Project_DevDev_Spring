@@ -27,7 +27,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         if (userData != null) {
 
             //UserDetails에 담아서 return하면 AutneticationManager가 검증 함
-            return new CustomUserDTO(userData) ;
+            return new CustomUserDTO(userData);
         }
 
         return null;
