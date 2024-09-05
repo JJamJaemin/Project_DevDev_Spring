@@ -1,106 +1,201 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
-    <title>Clean Blog - Start Bootstrap Theme</title>
-    <link rel="icon" type="image/x-icon" href="../../../../../../../Downloads/startbootstrap-clean-blog-gh-pages/assets/favicon.ico" />
-    <!-- Font Awesome icons (free version)-->
-    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-    <!-- Google fonts-->
-    <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css" />
-    <!-- Core theme CSS (includes Bootstrap)-->
-    <link href="css/styles.css" rel="stylesheet" />
-</head>
-<body>
-<!-- Navigation-->
-<nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
-    <div class="container px-4 px-lg-5">
-        <a class="navbar-brand" href="homepage.html">Devdev</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-            Menu
-            <i class="fas fa-bars"></i>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ms-auto py-4 py-lg-0">
-                <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="homepage.html">Home</a></li>
-                <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="../../../../../../../Downloads/startbootstrap-clean-blog-gh-pages/about.html">About</a></li>
-                <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="../../../../../../../Downloads/startbootstrap-clean-blog-gh-pages/post.html">Sample Post</a></li>
-                <li class="nav-item">
-                    <!-- ID 추가 -->
-                    <a id="myPageLink" class="nav-link px-lg-3 py-3 py-lg-4" href="#">My Page</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Clean Blog - Start Bootstrap Theme</title>
+        <link rel="icon" type="image/x-icon" href="../../../../../../../Downloads/startbootstrap-clean-blog-gh-pages/assets/favicon.ico" />
+        <!-- Font Awesome icons (free version)-->
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="css/styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <!-- Navigation-->
+        <nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
+            <div class="container px-4 px-lg-5">
+                <a class="navbar-brand" href="/">DEVDEV</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                    Menu
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ms-auto py-4 py-lg-0">
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="homepage.html">Home</a></li>
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="../../../../../../../Downloads/startbootstrap-clean-blog-gh-pages/about.html">About</a></li>
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="../../../../../../../Downloads/startbootstrap-clean-blog-gh-pages/post.html">Post</a></li>
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="../../../../../../../Downloads/startbootstrap-clean-blog-gh-pages/contact.html">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <script>
+            // JWT 토큰이 있는지 확인
+            const token = localStorage.getItem('jwtToken');
 
-<!-- JavaScript 코드 -->
-<script>
-    document.getElementById('myPageLink').addEventListener('click', function(event) {
-        event.preventDefault(); // 기본 링크 동작을 막음
-        window.location.href = '/mypage'; // '/mypage'로 리다이렉트
-    });
-</script>
+            const navItems = document.querySelector('#navbarResponsive .navbar-nav');
 
-<!-- 나머지 콘텐츠 -->
-<header class="masthead" style="background-image: url('../../../../../../../Downloads/startbootstrap-clean-blog-gh-pages/assets/img/home-bg.jpg')">
-    <div class="container position-relative px-4 px-lg-5">
-        <div class="row gx-4 gx-lg-5 justify-content-center">
-            <div class="col-md-10 col-lg-8 col-xl-7">
-                <div class="site-heading">
-                    <h1>Clean Blog</h1>
-                    <span class="subheading">A Blog Theme by Start Bootstrap</span>
+            if (token) {
+                // 로그인 상태: Logout 버튼 추가
+                const logoutItem = document.createElement('li');
+                logoutItem.classList.add('nav-item');
+                logoutItem.innerHTML = '<a class="nav-link px-lg-3 py-3 py-lg-4" href="#" id="logoutButton">Logout</a>';
+                navItems.appendChild(logoutItem);
+                // 로그인 상태: Profile 버튼 추가
+                const profileItem = document.createElement('li');
+                profileItem.classList.add('nav-item');
+                profileItem.innerHTML = '<a class="nav-link px-lg-3 py-3 py-lg-4" href="/mypage">My Profile</a>';
+                navItems.appendChild(profileItem);
+
+                // 로그아웃 기능 구현
+                document.getElementById('logoutButton').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    logout();
+                });
+            } else {
+                // 비로그인 상태: Login 버튼 추가
+                const loginItem = document.createElement('li');
+                loginItem.classList.add('nav-item');
+                loginItem.innerHTML = '<a class="nav-link px-lg-3 py-3 py-lg-4" href="/loginpage">Login</a>';
+                navItems.appendChild(loginItem);
+            }
+            // 로그아웃 함수
+            function logout() {
+                // 1. 클라이언트에서 JWT 토큰 제거
+                localStorage.removeItem('jwtToken');
+
+                // 2. 서버에 로그아웃 요청 (옵션)
+                // fetch('/api/logout', { method: 'POST' })
+                //     .then(response => {
+                //         if (response.ok) {
+                //             console.log('서버 로그아웃 성공');
+                //         }
+                //     })
+                //     .catch(error => console.error('로그아웃 에러:', error));
+
+                // 3. 홈페이지로 리다이렉트
+                window.location.href = '/';
+            }
+        </script>
+        <!-- Page Header-->
+        <header class="masthead" style="background-image: url('../../../../../../../Downloads/startbootstrap-clean-blog-gh-pages/assets/img/home-bg.jpg')">
+            <div class="container position-relative px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <div class="site-heading">
+                            <h1>DEVDEV</h1>
+                            <span class="subheading">개발자를 위한 사이트</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- Main Content-->
+        <div class="container px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <!-- Post preview-->
+                    <div class="post-preview">
+                        <a href="../../../../../../../Downloads/startbootstrap-clean-blog-gh-pages/post.html">
+                            <h2 class="post-title">Man must explore, and this is exploration at its greatest</h2>
+                            <h3 class="post-subtitle">Problems look mighty small from 150 miles up</h3>
+                        </a>
+                        <p class="post-meta">
+                            Posted by
+                            <a href="#!">Start Bootstrap</a>
+                            on September 24, 2023
+                        </p>
+                    </div>
+                    <!-- Divider-->
+                    <hr class="my-4" />
+                    <!-- Post preview-->
+                    <div class="post-preview">
+                        <a href="../../../../../../../Downloads/startbootstrap-clean-blog-gh-pages/post.html"><h2 class="post-title">I believe every human has a finite number of heartbeats. I don't intend to waste any of mine.</h2></a>
+                        <p class="post-meta">
+                            Posted by
+                            <a href="#!">Start Bootstrap</a>
+                            on September 18, 2023
+                        </p>
+                    </div>
+                    <!-- Divider-->
+                    <hr class="my-4" />
+                    <!-- Post preview-->
+                    <div class="post-preview">
+                        <a href="../../../../../../../Downloads/startbootstrap-clean-blog-gh-pages/post.html">
+                            <h2 class="post-title">Science has not yet mastered prophecy</h2>
+                            <h3 class="post-subtitle">We predict too much for the next year and yet far too little for the next ten.</h3>
+                        </a>
+                        <p class="post-meta">
+                            Posted by
+                            <a href="#!">Start Bootstrap</a>
+                            on August 24, 2023
+                        </p>
+                    </div>
+                    <!-- Divider-->
+                    <hr class="my-4" />
+                    <!-- Post preview-->
+                    <div class="post-preview">
+                        <a href="../../../../../../../Downloads/startbootstrap-clean-blog-gh-pages/post.html">
+                            <h2 class="post-title">Failure is not an option</h2>
+                            <h3 class="post-subtitle">Many say exploration is part of our destiny, but it’s actually our duty to future generations.</h3>
+                        </a>
+                        <p class="post-meta">
+                            Posted by
+                            <a href="#!">Start Bootstrap</a>
+                            on July 8, 2023
+                        </p>
+                    </div>
+                    <!-- Divider-->
+                    <hr class="my-4" />
+                    <!-- Pager-->
+                    <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" href="#!">Older Posts →</a></div>
                 </div>
             </div>
         </div>
-    </div>
-</header>
-
-<!-- 메인 콘텐츠 영역 -->
-
-<footer class="border-top">
-    <div class="container px-4 px-lg-5">
-        <div class="row gx-4 gx-lg-5 justify-content-center">
-            <div class="col-md-10 col-lg-8 col-xl-7">
-                <ul class="list-inline text-center">
-                    <li class="list-inline-item">
-                        <a href="#!">
+        <!-- Footer-->
+        <footer class="border-top">
+            <div class="container px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <ul class="list-inline text-center">
+                            <li class="list-inline-item">
+                                <a href="#!">
                                     <span class="fa-stack fa-lg">
                                         <i class="fas fa-circle fa-stack-2x"></i>
                                         <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
                                     </span>
-                        </a>
-                    </li>
-                    <li class="list-inline-item">
-                        <a href="#!">
+                                </a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a href="#!">
                                     <span class="fa-stack fa-lg">
                                         <i class="fas fa-circle fa-stack-2x"></i>
                                         <i class="fab fa-facebook-f fa-stack-1x fa-inverse"></i>
                                     </span>
-                        </a>
-                    </li>
-                    <li class="list-inline-item">
-                        <a href="#!">
+                                </a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a href="#!">
                                     <span class="fa-stack fa-lg">
                                         <i class="fas fa-circle fa-stack-2x"></i>
                                         <i class="fab fa-github fa-stack-1x fa-inverse"></i>
                                     </span>
-                        </a>
-                    </li>
-                </ul>
-                <div class="small text-center text-muted fst-italic">Copyright &copy; Your Website 2023</div>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="small text-center text-muted fst-italic">Copyright &copy; Your Website 2023</div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-</footer>
-
-<!-- Bootstrap core JS-->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-<!-- Core theme JS-->
-<script src="../../../../../../../Downloads/startbootstrap-clean-blog-gh-pages/js/scripts.js"></script>
-</body>
+        </footer>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="../../../../../../../Downloads/startbootstrap-clean-blog-gh-pages/js/scripts.js"></script>
+    </body>
 </html>
