@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Clean Blog - Start Bootstrap Theme</title>
+    <link rel="icon" type="image/x-icon" href="../../../../../../../Downloads/startbootstrap-clean-blog-gh-pages/assets/favicon.ico" />
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="css/styles.css" rel="stylesheet" />
+</head>
+<body>
+<!-- Navigation-->
+<nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
+    <div class="container">
+        <a class="navbar-brand" href="homepage.html">Devdev</a>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="homepage.html">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="mypage.html">My Page</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h2 class="text-center mt-4">My Page - 회원정보 수정</h2>
+            <form id="updateForm">
+                <div class="form-group">
+                    <label for="username">사용자 이름</label>
+                    <input type="text" id="username" name="username" class="form-control" placeholder="사용자 이름을 입력하세요">
+                </div>
+                <div class="form-group">
+                    <label for="email">이메일</label>
+                    <input type="email" id="email" name="email" class="form-control" placeholder="이메일 주소를 입력하세요">
+                </div>
+                <div class="form-group">
+                    <label for="password">비밀번호</label>
+                    <input type="password" id="password" name="password" class="form-control" placeholder="새 비밀번호를 입력하세요">
+                </div>
+                <button type="button" class="btn btn-primary mt-3" onclick="updateUser()">수정하기</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const token = localStorage.getItem('jwtToken');
+
+        if (token) {
+            fetch('/api/user', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => {
+                    if (response.status === 401) {
+                        // 토큰 만료 시 로그인 페이지로 리다이렉트
+                        window.location.href = '/loginpage';
+                    } else {
+                        return response.json();
+                    }
+                })
+                .then(data => {
+                    // 사용자 정보를 폼에 설정
+                    document.getElementById('username').value = data.username;
+                    // 이메일과 비밀번호는 직접적으로 폼에 설정하지 않습니다.
+                    // 비밀번호는 보안상의 이유로 빈 값으로 남겨둡니다.
+                    // 이메일 필드를 설정하려면 다음과 같이 할 수 있습니다:
+                    // document.getElementById('email').value = data.email;
+                })
+                .catch(error => console.error('Error fetching user info:', error));
+        } else {
+            console.error('No JWT token found');
+        }
+    });
+
+    function updateUser() {
+        const token = localStorage.getItem('jwtToken');
+        const username = document.getElementById('username').value;
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        fetch('/api/user/update', { // 실제 API 엔드포인트로 변경
+            method: 'PUT',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                username: username,
+                email: email,
+                password: password
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                alert('User updated successfully');
+            })
+            .catch(error => console.error('Error updating user:', error));
+    }
+</script>
+</body>
+</html>
