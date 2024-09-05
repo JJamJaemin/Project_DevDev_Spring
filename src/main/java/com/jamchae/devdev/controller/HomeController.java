@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class HomeController {
     @GetMapping("/")
     public String mainP() {
-        return "main Controller";
+        return "homepage";
     }
 
     @GetMapping("/loginpage")
@@ -21,4 +21,5 @@ public class HomeController {
     public String joinPage() {
         return "join";
     }
+
 }
