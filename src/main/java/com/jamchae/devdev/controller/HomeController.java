@@ -22,4 +22,6 @@ public class HomeController {
         return "join";
     }
 
+    @GetMapping("/myapge")
+    public String myPage() {return "mypage";}
 }
