@@ -9,11 +9,11 @@ import jakarta.persistence.Id;
 public class Board {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long board_id;
-    private String title;
-    private String content;
-    private String date;
-    private String comment;
+    private int board_id; //고유번호
+    private String title; //게시물 제목
+    private String content; //게시물 내용
+    private String date; //작성 날짜
+    private String comment; //댓글
 
     public String getTitle() {
         return title;
@@ -47,11 +47,11 @@ public class Board {
         this.comment = comment;
     }
 
-    public Long getBoard_id() {
+    public int getBoard_id() {
         return board_id;
     }
 
-    public void setBoard_id(Long board_id) {
+    public void setBoard_id(int board_id) {
         this.board_id = board_id;
     }
 }
