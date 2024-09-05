@@ -25,10 +25,43 @@
         <div id="loginBoxTitle">Devdev Login</div>
         <!-- 아이디, 비번, 버튼 박스 -->
         <div id="inputBox">
-            <div class="input-form-box"><span>아이디 </span><input type="text" name="uid" class="form-control"></div>
-            <div class="input-form-box"><span>비밀번호 </span><input type="password" name="upw" class="form-control"></div>
-            <div class="button-login-box" >
-                <button type="button" class="btn btn-primary btn-xs" style="width:100%; margin-bottom: 10px;">로그인</button>
+            <form action="/login" method="post" id="loginForm">
+                <div class="input-form-box">
+                    <span>아이디 </span>
+                    <input type="text" name="username" class="form-control" required>
+                </div>
+                <div class="input-form-box">
+                    <span>비밀번호 </span>
+                    <input type="password" name="password" class="form-control" required>
+                </div>
+                <div class="button-login-box">
+                    <button type="submit" class="btn btn-primary btn-xs" style="width:100%; margin-bottom: 10px;">로그인</button>
+                </div>
+            </form>
+            <script>
+                document.getElementById('loginForm').addEventListener('submit', function(event) {
+                    event.preventDefault(); // 기본 폼 제출 동작을 막습니다.
+
+                    const formData = new FormData(this);
+                    fetch('/login', {
+                        method: 'POST',
+                        body: formData
+                    })
+                        .then(response => {
+                            if (response.ok) {
+                                // 로그인 성공
+                                window.location.href = '/'; // 로그인 성공 후 리다이렉트
+                            } else {
+                                // 로그인 실패
+                                alert('로그인 실패. 아이디나 비밀번호를 확인하세요.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
+                });
+            </script>
+            <div class="button-login-box">
                 <button type="button" class="btn btn-primary btn-xs" style="width:100%" onclick="window.location.href='/joinpage'">회원가입</button>
             </div>
         </div>
