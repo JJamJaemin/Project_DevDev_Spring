@@ -19,7 +19,7 @@
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg navbar-light" id="mainNav">
             <div class="container px-4 px-lg-5">
-                <a class="navbar-brand" href="homepage.html">Start Bootstrap</a>
+                <a class="navbar-brand" href="/">DEVDEV</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                     Menu
                     <i class="fas fa-bars"></i>
@@ -28,20 +28,68 @@
                     <ul class="navbar-nav ms-auto py-4 py-lg-0">
                         <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="homepage.html">Home</a></li>
                         <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="../../../../../../../Downloads/startbootstrap-clean-blog-gh-pages/about.html">About</a></li>
-                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="../../../../../../../Downloads/startbootstrap-clean-blog-gh-pages/post.html">Sample Post</a></li>
+                        <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="../../../../../../../Downloads/startbootstrap-clean-blog-gh-pages/post.html">Post</a></li>
                         <li class="nav-item"><a class="nav-link px-lg-3 py-3 py-lg-4" href="../../../../../../../Downloads/startbootstrap-clean-blog-gh-pages/contact.html">Contact</a></li>
                     </ul>
                 </div>
             </div>
         </nav>
+        <script>
+            // JWT 토큰이 있는지 확인
+            const token = localStorage.getItem('jwtToken');
+
+            const navItems = document.querySelector('#navbarResponsive .navbar-nav');
+
+            if (token) {
+                // 로그인 상태: Logout 버튼 추가
+                const logoutItem = document.createElement('li');
+                logoutItem.classList.add('nav-item');
+                logoutItem.innerHTML = '<a class="nav-link px-lg-3 py-3 py-lg-4" href="#" id="logoutButton">Logout</a>';
+                navItems.appendChild(logoutItem);
+                // 로그인 상태: Profile 버튼 추가
+                const profileItem = document.createElement('li');
+                profileItem.classList.add('nav-item');
+                profileItem.innerHTML = '<a class="nav-link px-lg-3 py-3 py-lg-4" href="/profile">My Profile</a>';
+                navItems.appendChild(profileItem);
+
+                // 로그아웃 기능 구현
+                document.getElementById('logoutButton').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    logout();
+                });
+            } else {
+                // 비로그인 상태: Login 버튼 추가
+                const loginItem = document.createElement('li');
+                loginItem.classList.add('nav-item');
+                loginItem.innerHTML = '<a class="nav-link px-lg-3 py-3 py-lg-4" href="/loginpage">Login</a>';
+                navItems.appendChild(loginItem);
+            }
+            // 로그아웃 함수
+            function logout() {
+                // 1. 클라이언트에서 JWT 토큰 제거
+                localStorage.removeItem('jwtToken');
+
+                // 2. 서버에 로그아웃 요청 (옵션)
+                // fetch('/api/logout', { method: 'POST' })
+                //     .then(response => {
+                //         if (response.ok) {
+                //             console.log('서버 로그아웃 성공');
+                //         }
+                //     })
+                //     .catch(error => console.error('로그아웃 에러:', error));
+
+                // 3. 홈페이지로 리다이렉트
+                window.location.href = '/';
+            }
+        </script>
         <!-- Page Header-->
         <header class="masthead" style="background-image: url('../../../../../../../Downloads/startbootstrap-clean-blog-gh-pages/assets/img/home-bg.jpg')">
             <div class="container position-relative px-4 px-lg-5">
                 <div class="row gx-4 gx-lg-5 justify-content-center">
                     <div class="col-md-10 col-lg-8 col-xl-7">
                         <div class="site-heading">
-                            <h1>Clean Blog</h1>
-                            <span class="subheading">A Blog Theme by Start Bootstrap</span>
+                            <h1>DEVDEV</h1>
+                            <span class="subheading">개발자를 위한 사이트</span>
                         </div>
                     </div>
                 </div>
