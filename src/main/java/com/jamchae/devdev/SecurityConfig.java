@@ -2,6 +2,7 @@ package com.jamchae.devdev;
 
 import com.jamchae.devdev.security.JWTFilter;
 import com.jamchae.devdev.security.JWTUtil;
+import com.jamchae.devdev.security.LoginFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,8 +12,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import com.jamchae.devdev.security.LoginFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -45,9 +44,6 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-
-
-
         //csrf disable
         http
                 .csrf((auth) -> auth.disable());
@@ -67,7 +63,7 @@ public class SecurityConfig {
         //다른 요청에 대해서는 로그인이 되어야만 가능
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/login", "/", "/join", "/loginpage", "/joinpage", "/mypage").permitAll()
+                        .requestMatchers("/login", "/", "/join", "/loginpage", "/joinpage", "/postpage", "/boards", "/boards/create-post", "/boards/create-post-form", "/mypage", "/api/", "/api/user").permitAll()
                         .requestMatchers("/css/**", "/js/**", "/images/**","/").permitAll()
                         .anyRequest().authenticated());
 
