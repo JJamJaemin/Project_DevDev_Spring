@@ -21,6 +21,7 @@ public class BoardService {
         board.setTitle(boardDTO.getTitle());
         board.setContent(boardDTO.getContent());
         board.setDate(boardDTO.getDate()); // 혹은 현재 날짜와 시간으로 설정
+        board.setBoardType(boardDTO.getBoardType());
         return boardRepository.save(board);
     }
 
@@ -37,5 +38,9 @@ public class BoardService {
     // 게시물 삭제
     public void deleteBoard(int id) {
         boardRepository.deleteById(id);
+    }
+    //게시물 타입
+    public List<Board> getBoardsByType(Board.BoardType boardType) {
+        return boardRepository.findByBoardType(boardType);
     }
 }

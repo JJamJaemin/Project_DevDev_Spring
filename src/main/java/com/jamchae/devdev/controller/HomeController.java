@@ -35,22 +35,6 @@ public class HomeController {
     public String joinPage() {
         return "join";
     }
-
-    //게시물 페이지
-    @GetMapping("/postpage")
-    public String postPage(Model model) {
-        try {
-            List<Board> boards = boardService.getAllBoards();
-            logger.info("Retrieved {} boards", boards.size());
-            model.addAttribute("boards", boards);
-            return "post";
-        } catch (Exception e) {
-            logger.error("Error retrieving boards", e);
-            model.addAttribute("error", "게시물을 불러오는 중 오류가 발생했습니다.");
-            return "error";
-        }
-    }
-
     //마이페이지
     @GetMapping("/mypage")
     public String myPage() {

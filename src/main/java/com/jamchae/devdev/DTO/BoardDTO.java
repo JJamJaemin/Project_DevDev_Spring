@@ -1,11 +1,14 @@
 package com.jamchae.devdev.DTO;
 
+import com.jamchae.devdev.domain.Board;
+
 public class BoardDTO {
     private int board_id;
     private String title;
     private String content;
     private String date;
     private String comment;
+    private Board.BoardType boardType;
 
     public int getBoard_id() {
         return board_id;
@@ -45,5 +48,18 @@ public class BoardDTO {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public Board.BoardType getBoardType() {
+        return boardType;
+    }
+
+    public void setBoardType(Board.BoardType boardType) {
+        this.boardType = boardType;
+    }
+
+    // 게시판 유형의 표시 이름을 반환하는 편의 메서드
+    public String getBoardTypeDisplayName() {
+        return boardType != null ? boardType.getDisplayName() : "";
     }
 }

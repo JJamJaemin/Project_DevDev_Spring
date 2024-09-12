@@ -65,7 +65,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers(
                                 "/login", "/", "/join", "/loginpage", "/joinpage", "/postpage",
-                                "/boards", "/boards/allpost", "/boards/create-post", "/boards/create-post-form","/boards/{id}",
+                                "/boards", "/boards/allpost", "/boards/create-post", "/boards/create-post-form","/boards/{id}","/boards/type/**", // 게시판 유형별 접근 허용
                                 "/mypage", "/api/**",
                                 "/css/**", "/js/**", "/images/**"
                         ).permitAll()

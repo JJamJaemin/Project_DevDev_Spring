@@ -1,9 +1,6 @@
 package com.jamchae.devdev.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Board {
@@ -14,6 +11,35 @@ public class Board {
     private String content; //게시물 내용
     private String date; //작성 날짜
     private String comment; //댓글
+
+    @Enumerated(EnumType.STRING)
+    private BoardType boardType; // 게시판 유형
+
+    public enum BoardType {
+        FREE("일반 자유"),
+        PROJECT_RECRUITMENT("프로젝트 모집"),
+        COMPLETED_PROJECT("완성된 프로젝트");
+
+        private final String displayName;
+
+        BoardType(String displayName) {
+            this.displayName = displayName;
+        }
+
+        public String getDisplayName() {
+            return displayName;
+        }
+    }
+
+    // Existing getters and setters
+
+    public BoardType getBoardType() {
+        return boardType;
+    }
+
+    public void setBoardType(BoardType boardType) {
+        this.boardType = boardType;
+    }
 
     public String getTitle() {
         return title;
