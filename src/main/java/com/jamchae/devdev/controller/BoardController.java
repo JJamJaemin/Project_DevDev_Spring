@@ -38,6 +38,16 @@ public class BoardController {
 
         return new RedirectView("/postpage"); // 작성 후 게시물 목록 페이지로 리다이렉트
     }
+    //게시물 자세히 보기
+    @GetMapping("/{id}")
+    public String viewBoard(@PathVariable("id") int id, Model model) {
+        Board board = boardService.getBoardById(id);
+        if (board == null) {
+            return "error"; // 게시물이 없을 경우 에러 페이지로
+        }
+        model.addAttribute("board", board);
+        return "boardDetail"; // boardDetail.html 템플릿을 사용
+    }
 }
 
 

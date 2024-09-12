@@ -65,7 +65,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers(
                                 "/login", "/", "/join", "/loginpage", "/joinpage", "/postpage",
-                                "/boards", "/boards/allpost", "/boards/create-post", "/boards/create-post-form",
+                                "/boards", "/boards/allpost", "/boards/create-post", "/boards/create-post-form","/boards/{id}",
                                 "/mypage", "/api/**",
                                 "/css/**", "/js/**", "/images/**"
                         ).permitAll()

@@ -30,8 +30,8 @@ public class BoardService {
     }
 
     // ID로 게시물 조회
-    public Optional<Board> getBoardById(int id) {
-        return boardRepository.findById(id);
+    public Board getBoardById(int id) {
+        return boardRepository.findById(id).orElse(null);
     }
 
     // 게시물 삭제
