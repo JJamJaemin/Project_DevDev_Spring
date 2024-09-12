@@ -63,8 +63,12 @@ public class SecurityConfig {
         //다른 요청에 대해서는 로그인이 되어야만 가능
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/login", "/", "/join", "/loginpage", "/joinpage", "/postpage", "/boards", "/boards/create-post", "/boards/create-post-form", "/mypage", "/api/", "/api/user").permitAll()
-                        .requestMatchers("/css/**", "/js/**", "/images/**","/").permitAll()
+                        .requestMatchers(
+                                "/login", "/", "/join", "/loginpage", "/joinpage", "/postpage",
+                                "/boards", "/boards/allpost", "/boards/create-post", "/boards/create-post-form",
+                                "/mypage", "/api/**",
+                                "/css/**", "/js/**", "/images/**"
+                        ).permitAll()
                         .anyRequest().authenticated());
 
 

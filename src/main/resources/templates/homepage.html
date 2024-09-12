@@ -35,12 +35,27 @@
             </div>
         </nav>
         <script>
-            // JWT 토큰이 있는지 확인
+            // JWT 토큰 유효성 검사 함수
+            function isTokenValid(token) {
+                if (!token) return false;
+
+                try {
+                    const payload = JSON.parse(atob(token.split('.')[1]));
+                    const expirationTime = payload.exp * 1000; // JWT의 exp는 초 단위이므로 밀리초로 변환
+                    return Date.now() < expirationTime;
+                } catch (error) {
+                    console.error('Token validation error:', error);
+                    return false;
+                }
+            }
+
+            // JWT 토큰 가져오기 및 유효성 검사
             const token = localStorage.getItem('jwtToken');
+            const isLoggedIn = isTokenValid(token);
 
             const navItems = document.querySelector('#navbarResponsive .navbar-nav');
 
-            if (token) {
+            if (isLoggedIn) {
                 // 로그인 상태: Logout 버튼 추가
                 const logoutItem = document.createElement('li');
                 logoutItem.classList.add('nav-item');
@@ -63,7 +78,13 @@
                 loginItem.classList.add('nav-item');
                 loginItem.innerHTML = '<a class="nav-link px-lg-3 py-3 py-lg-4" href="/loginpage">Login</a>';
                 navItems.appendChild(loginItem);
+
+                // 토큰이 만료되었다면 제거
+                if (token) {
+                    localStorage.removeItem('jwtToken');
+                }
             }
+
             // 로그아웃 함수
             function logout() {
                 // 1. 클라이언트에서 JWT 토큰 제거
