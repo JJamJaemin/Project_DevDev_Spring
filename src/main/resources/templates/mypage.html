@@ -35,17 +35,22 @@
             <form id="updateForm">
                 <div class="form-group">
                     <label for="username">사용자 이름</label>
-                    <input type="text" id="username" name="username" class="form-control" placeholder="사용자 이름을 입력하세요">
+                    <input type="text" id="username" name="username" class="form-control" placeholder="사용자 이름을 입력하세요" readonly>
                 </div>
                 <div class="form-group">
-                    <label for="email">이메일</label>
-                    <input type="email" id="email" name="email" class="form-control" placeholder="이메일 주소를 입력하세요">
+                    <label for="skill">기술</label>
+                    <input type="text" id="skill" name="skill" class="form-control" placeholder="기술를 입력하세요" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" class="form-control" placeholder="email을 입력하세요" readonly>
                 </div>
                 <div class="form-group">
                     <label for="password">비밀번호</label>
-                    <input type="password" id="password" name="password" class="form-control" placeholder="새 비밀번호를 입력하세요">
+                    <input type="password" id="password" name="password" class="form-control" placeholder="새 비밀번호를 입력하세요" readonly>
                 </div>
-                <button type="button" class="btn btn-primary mt-3" onclick="updateUser()">수정하기</button>
+                <button type="button" class="btn btn-primary mt-3" onclick="toggleEdit()">수정하기</button>
+                <button type="button" class="btn btn-success mt-3" id="saveButton" onclick="updateUser()" style="display:none;">저장하기</button>
             </form>
         </div>
     </div>
@@ -73,10 +78,8 @@
                 .then(data => {
                     // 사용자 정보를 폼에 설정
                     document.getElementById('username').value = data.username;
-                    // 이메일과 비밀번호는 직접적으로 폼에 설정하지 않습니다.
-                    // 비밀번호는 보안상의 이유로 빈 값으로 남겨둡니다.
-                    // 이메일 필드를 설정하려면 다음과 같이 할 수 있습니다:
-                    // document.getElementById('email').value = data.email;
+                    document.getElementById('skill').value = data.skill;
+                    document.getElementById('email').value = data.email;
                 })
                 .catch(error => console.error('Error fetching user info:', error));
         } else {
@@ -84,13 +87,30 @@
         }
     });
 
+    function toggleEdit() {
+        const inputs = document.querySelectorAll('#updateForm input');
+        const saveButton = document.getElementById('saveButton');
+
+        inputs.forEach(input => {
+            input.readOnly = !input.readOnly;
+        });
+
+        if (saveButton.style.display === 'none') {
+            saveButton.style.display = 'inline';
+            saveButton.textContent = '저장하기';
+        } else {
+            saveButton.style.display = 'none';
+        }
+    }
+
     function updateUser() {
         const token = localStorage.getItem('jwtToken');
         const username = document.getElementById('username').value;
-        const email = document.getElementById('email').value;
+        const skill = document.getElementById('skill').value;
         const password = document.getElementById('password').value;
+        const email = document.getElementById('email').value;
 
-        fetch('/api/user/update', { // 실제 API 엔드포인트로 변경
+        fetch('/api/user/update', {
             method: 'PUT',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -98,13 +118,23 @@
             },
             body: JSON.stringify({
                 username: username,
-                email: email,
-                password: password
+                skill: skill,
+                password: password,
+                email: email
             })
         })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => {
+                        throw new Error(`Network response was not ok. Status: ${response.status}, Text: ${text}`);
+                    });
+                }
+                return response.json();
+            })
             .then(data => {
+                console.log('Success:', data);
                 alert('User updated successfully');
+                toggleEdit(); // 필드를 다시 읽기 전용으로 설정하고 저장 버튼 숨기기
             })
             .catch(error => console.error('Error updating user:', error));
     }
