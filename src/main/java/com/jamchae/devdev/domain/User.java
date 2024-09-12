@@ -13,6 +13,8 @@ public class User {
 
     private String user_nickname; //사용자 이름
 
+    private String email;
+
     private String username; //사용자 id
 
     private String password; //사용자 비밀번호
@@ -55,6 +57,13 @@ public class User {
         this.password = password;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public String getUsername() {
         return username;

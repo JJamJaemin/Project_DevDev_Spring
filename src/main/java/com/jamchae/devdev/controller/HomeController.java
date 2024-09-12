@@ -32,19 +32,7 @@ public class HomeController {
     public String postPage() {
         return "post";
     }
-    //마이페이지
-    @GetMapping("/mypage")
-    public String myPage() {
-        return "mypage";
-    }
-//    @GetMapping("/api/user")
-//    public ResponseEntity<UserDTO> getUserInfo() {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        String username = authentication.getName();
-//        User user = UserRepository.findByUsername(username);
-//        return ResponseEntity.ok(userDTO);
-//    }
-
+    // 마이페이지(계정 정보)
     @GetMapping("/mypage")
     public String myPage() {return "mypage";}
 }

@@ -32,20 +32,52 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <h2 class="text-center mt-4">My Page - 회원정보 수정</h2>
-            <form id="updateForm">
+            <!-- 사용자 정보 표시 폼 -->
+            <form id="infoForm">
                 <div class="form-group">
-                    <label for="username">사용자 이름</label>
-                    <input type="text" id="username" name="username" class="form-control" placeholder="사용자 이름을 입력하세요">
+                    <label for="username">사용자 아이디</label>
+                    <input type="text" id="username" name="username" class="form-control" readonly />
+                </div>
+                <div class="form-group">
+                    <label for="nickname">닉네임</label>
+                    <input type="text" id="nickname" name="nickname" class="form-control" readonly />
                 </div>
                 <div class="form-group">
                     <label for="email">이메일</label>
-                    <input type="email" id="email" name="email" class="form-control" placeholder="이메일 주소를 입력하세요">
+                    <input type="text" id="email" name="email" class="form-control" readonly />
                 </div>
                 <div class="form-group">
-                    <label for="password">비밀번호</label>
-                    <input type="password" id="password" name="password" class="form-control" placeholder="새 비밀번호를 입력하세요">
+                    <label for="skill">스킬</label>
+                    <select id="skill" name="skill" multiple class="form-control" disabled>
+                        <!-- 스킬 옵션들 -->
+                    </select>
                 </div>
-                <button type="button" class="btn btn-primary mt-3" onclick="updateUser()">수정하기</button>
+                <button type="button" class="btn btn-primary mt-3" onclick="editUser()">수정하기</button>
+            </form>
+
+            <!-- 정보 수정 폼 (숨겨져 있음) -->
+            <form id="updateForm" class="hidden">
+                <div class="form-group">
+                    <label for="usernameUpdate">사용자 아이디</label>
+                    <input type="text" id="usernameUpdate" name="username" class="form-control" readonly />
+                </div>
+                <div class="form-group">
+                    <label for="nicknameUpdate">닉네임</label>
+                    <input type="text" id="nicknameUpdate" name="nickname" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label for="emailUpdate">이메일</label>
+                    <input type="text" id="emailUpdate" name="email" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label for="skillUpdate">스킬</label>
+                    <select id="skillUpdate" name="skill" multiple class="form-control">
+                        <!-- 스킬 옵션들 (JavaScript로 동적으로 채워질 예정) -->
+                    </select>
+                </div>
+
+                <button type="button" class="btn btn-primary mt-3" onclick="updateUser()">저장하기</button>
+                <button type="button" class="btn btn-secondary mt-3" onclick="cancelEdit()">취소하기</button>
             </form>
         </div>
     </div>
@@ -53,7 +85,6 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const token = localStorage.getItem('jwtToken');
-
         if (token) {
             fetch('/api/user', {
                 method: 'GET',
@@ -62,33 +93,77 @@
                     'Content-Type': 'application/json'
                 }
             })
-                .then(response => {
-                    if (response.status === 401) {
-                        // 토큰 만료 시 로그인 페이지로 리다이렉트
-                        window.location.href = '/loginpage';
-                    } else {
-                        return response.json();
-                    }
-                })
-                .then(data => {
-                    // 사용자 정보를 폼에 설정
-                    document.getElementById('username').value = data.username;
-                    // 이메일과 비밀번호는 직접적으로 폼에 설정하지 않습니다.
-                    // 비밀번호는 보안상의 이유로 빈 값으로 남겨둡니다.
-                    // 이메일 필드를 설정하려면 다음과 같이 할 수 있습니다:
-                    // document.getElementById('email').value = data.email;
-                })
-                .catch(error => console.error('Error fetching user info:', error));
+            .then(response => {
+                if (response.status === 401) {
+                    // 토큰 만료 시 로그인 페이지로 리다이렉트
+                    window.location.href = '/loginpage';
+                } else {
+                    return response.json();
+                }
+            })
+            .then(data => {
+                // 사용자 정보를 폼에 설정
+                document.getElementById('username').value = data.username;
+                if (data.nickname) {
+                    document.getElementById('nicknameUpdate').value = data.nickname;
+                }else{
+                    const placeholderOption = document.createElement('option');
+                    placeholderOption.text = '닉네임 입력하세요';
+                }
+                if (data.email) {
+                    document.getElementById('emailUpdate').value = data.email;
+                }else{
+                    const placeholderOption = document.createElement('option');
+                    placeholderOption.text = '이메일 입력하세요';
+                }
+
+                const skillSelect = document.getElementById('skillUpdate');
+                // Clear existing options
+                skillSelect.innerHTML = '';
+
+                if (data.skill && Array.isArray(data.skill) && data.skill.length > 0) {
+                    data.skill.forEach(skill => {
+                        const option = document.createElement('option');
+                        option.value = skill;
+                        option.text = skill;
+                        option.selected = true; // 선택된 스킬 표시
+                        skillSelect.add(option);
+                    });
+                } else {
+                    // 스킬이 없을 경우 기본 옵션 표시
+                    const placeholderOption = document.createElement('option');
+                    placeholderOption.value = '';
+                    placeholderOption.text = '스킬을 입력하세요';
+                    placeholderOption.disabled = true;
+                    placeholderOption.selected = true;
+                    skillSelect.add(placeholderOption);
+                }
+            })
+            .catch(error => console.error('Error fetching user info:', error));
         } else {
             console.error('No JWT token found');
         }
     });
+    function editUser() {
+        document.getElementById('infoForm').classList.add('hidden');
+        document.getElementById('updateForm').classList.remove('hidden');
+    }
+
+    function cancelEdit() {
+        document.getElementById('updateForm').classList.add('hidden');
+        document.getElementById('infoForm').classList.remove('hidden');
+    }
 
     function updateUser() {
+        console.log("업데이트 함수 실행");
         const token = localStorage.getItem('jwtToken');
         const username = document.getElementById('username').value;
         const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
+        const nickname = document.getElementById('nickname').value;
+        // const skill = document.getElementById('skill').value;
+        const skillSelect = document.getElementById('skill');
+        const selectedOptions = Array.from(skillSelect.selectedOptions).map(option => option.value); // 선택된 값들 가져오기
+        // const user_image= document.getElementById('user_image').value;
 
         fetch('/api/user/update', { // 실제 API 엔드포인트로 변경
             method: 'PUT',
@@ -99,14 +174,28 @@
             body: JSON.stringify({
                 username: username,
                 email: email,
-                password: password
+                password: '',
+                user_nickname: nickname,
+                skill: selectedOptions,
             })
         })
-            .then(response => response.json())
-            .then(data => {
-                alert('User updated successfully');
-            })
-            .catch(error => console.error('Error updating user:', error));
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to update user');
+            }
+            return response.json();
+        })
+        .then(data => {
+            alert('User updated successfully');
+            cancelEdit(); // 수정 취소 및 폼 숨기기
+            document.getElementById('infoForm').classList.remove('hidden'); // 수정 후 정보 폼 다시 표시
+            document.getElementById('infoForm').reset(); // 폼 초기화
+            document.getElementById('updateForm').reset(); // 수정 폼 초기화
+        })
+        .catch(error => {
+            console.error('Error updating user:', error);
+            alert('Error updating user');
+        });
     }
 </script>
 </body>

@@ -27,4 +27,18 @@ public class UserService {
         }
         throw new RuntimeException("User not found");
     }
+
+    public UserDTO updateCurrentUserInfo( UserDTO userDTO){
+        User user = userRepository.findByUsername(userDTO.getUsername());
+        if (user != null) {
+            user.setUser_nickname(userDTO.getUser_nickname());
+            user.setEmail(userDTO.getEmail());
+            user.setSkill(userDTO.getSkill());
+//            user.setUser_image(userDTO.getUser_image());
+            userRepository.save(user);
+        } else {
+            throw new RuntimeException("User not found");
+        }
+        return userDTO;
+    }
 }
